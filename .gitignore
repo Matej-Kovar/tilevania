@@ -1,0 +1,29 @@
+# Unity – obecné
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Oo]bj/
+[Mm]emoryCaptures/
+
+# Rider / VS / VSCode
+.vs/
+.vscode/
+.idea/
+*.user
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.userprefs
+
+# Unity specific
+[Bb]ackup*/
+[Cc]ache/
+*.pidb
+*.booproj
+
+# OS bordel
+.DS_Store
+Thumbs.db
