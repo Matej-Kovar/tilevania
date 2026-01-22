@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,12 +13,13 @@ public class PlayerController : MonoBehaviour
     public bool isClimbing = false;
     public bool climbingUp = false;
     public bool climbingDown = false;
+    public TextMeshProUGUI scoreText;
     public GameObject projectilePrefab;
-    int score = 0;
 
     void Start()
     {
         initScale = transform.localScale;
+        UpdateScoreUI();
     }
 
     void Update()
@@ -68,6 +69,8 @@ public class PlayerController : MonoBehaviour
         canJump = true;
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            ScoreManager.Instance?.Reset();
+            UpdateScoreUI();
             gameObject.SetActive(false);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -82,8 +85,21 @@ public class PlayerController : MonoBehaviour
         }
         if(other.gameObject.CompareTag("Coin"))
         {
-            score += 1;
+            ScoreManager.Instance?.Add(1);
+            UpdateScoreUI();
             Destroy(other.gameObject);
+        }
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            var activeScene = SceneManager.GetActiveScene();
+            if (activeScene.name == "lv1")
+            {
+                SceneManager.LoadScene("lv2");
+            }
+            else if (activeScene.name == "lv2")
+            { 
+                 SceneManager.LoadScene("lv1");
+            }
         }
     }
 
@@ -94,6 +110,17 @@ public class PlayerController : MonoBehaviour
             isClimbing = false;
             rb.gravityScale = 2;
         }
+    }
+
+    void UpdateScoreUI()
+    {
+        if (scoreText == null)
+        {
+            return;
+        }
+
+        var currentScore = ScoreManager.Instance != null ? ScoreManager.Instance.Score : 0;
+        scoreText.text = "Score: " + currentScore;
     }
 
 }
